@@ -2,7 +2,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace HomeExercise.Tasks.NumberValidator;
 
@@ -19,6 +18,7 @@ public class NumberValidatorTests
 
     [TestCase(1, -1, TestName = "Scale less than zero")]
     [TestCase(1, 2, TestName = "Scale more than precision")]
+    [TestCase(2, 2, TestName = "Scale equals precision")]
     public void Constructor_ThrowArgumentException_ForInvalidScale(int precision, int scale)
     {
         var exception = () => new NumberValidator(precision, scale);
