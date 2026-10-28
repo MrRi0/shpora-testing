@@ -17,11 +17,16 @@ public class ObjectComparison
 
         //Перепишите код на использование Fluent Assertions.
         actualTsar.Should().BeEquivalentTo(expectedTsar, options =>
-            options.Excluding(x => x.Id)
-                   .Excluding(x => x.Parent.Id));
+            options.Excluding(memberInfo => memberInfo.Name == "Id"));
 
         //С таким подходом код стал компактее и читабельнее.
-        //Также при увеличении количества свойств Person в этом тесте практически ничего не придется менять.
+
+        // upd: Теперь мы отсекаем Id на любой глубине и при добалении предков тест не провалится
+        // Про "практически ничего не придется менять"
+        // При добавлении свойства в Person тест потребует изменений обновить
+        // expectedTsar или дополнить Excluding (для уникальных свойств по типу id).
+        // При этом AreEqual просто перестаёт проверять новые свойства тогда как
+        // BeEquivalentTo заставляет обновить тест
 
         //ClassicAssert.AreEqual(actualTsar.Name, expectedTsar.Name);
         //ClassicAssert.AreEqual(actualTsar.Age, expectedTsar.Age);
@@ -39,7 +44,7 @@ public class ObjectComparison
     public void CheckCurrentTsar_WithCustomEquality()
     {
         var actualTsar = TsarRegistry.GetCurrentTsar();
-        var expectedTsar = new Person("Iva IV The Terrible", 54, 170, 70,
+        var expectedTsar = new Person("Ivan IV The Terrible", 54, 170, 70,
             new Person("Vasili III of Russia", 28, 170, 60, null));
 
         // Какие недостатки у такого подхода? 
@@ -49,9 +54,9 @@ public class ObjectComparison
         //В предыдущем и моем тесте при провале теста в обозревателе тестов
         //видно где была ошибка или в каком свойстве было расхождение.
         //Здесь же при провале теста мы получаем то что ожидали True но получили False и не понятно где и что не правильно.
-        //Также тест относительно тяжело расширяем в отличие от моего решения.
-        //И еще данный тест проверяет не только первого предка, но и рекурсивно всех предков.
-        //Тут сложно что-то сказать, возможно это и правильней, но изначально мы проверяли только первого предка
+        //
+        //upd: AreEqual просто перестаёт проверять новые свойства тогда как
+        // BeEquivalentTo заставляет обновить тест
 
     }
 

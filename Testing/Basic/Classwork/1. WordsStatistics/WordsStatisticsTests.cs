@@ -1,7 +1,6 @@
 ﻿using Basic.Task.WordsStatistics.WordsStatistics;
 using FluentAssertions;
 using NUnit.Framework;
-using System.Net.WebSockets;
 
 namespace Basic.Task.WordsStatistics;
 

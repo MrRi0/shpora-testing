@@ -10,7 +10,7 @@ public class NumberValidatorTests
 {
     [TestCase(-1)]
     [TestCase(0)]
-    public void Constructor_ThrowArgumentException_ForNegativePrecision(int precision)
+    public void Constructor_ThrowArgumentException_ForNonPositivePrecision(int precision)
     {
         var exception = () => new NumberValidator(precision, 0);
         exception.Should().Throw<ArgumentException>("precision must be a positive number");
