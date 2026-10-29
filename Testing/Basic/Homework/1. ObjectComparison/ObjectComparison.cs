@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
+using System.Data;
 
 namespace HomeExercise.Tasks.ObjectComparison;
 public class ObjectComparison
@@ -17,7 +18,9 @@ public class ObjectComparison
 
         //Перепишите код на использование Fluent Assertions.
         actualTsar.Should().BeEquivalentTo(expectedTsar, options =>
-            options.Excluding(memberInfo => memberInfo.Name == "Id"));
+            options.Excluding(memberInfo => 
+                memberInfo.DeclaringType == typeof(Person) 
+                && memberInfo.Name == nameof(Person.Id)));
 
         //С таким подходом код стал компактее и читабельнее.
 
@@ -27,6 +30,8 @@ public class ObjectComparison
         // expectedTsar или дополнить Excluding (для уникальных свойств по типу id).
         // При этом AreEqual просто перестаёт проверять новые свойства тогда как
         // BeEquivalentTo заставляет обновить тест
+
+        //upd2: Теперь если переименуем поле IDE сообщит нам или само переименует 
 
         //ClassicAssert.AreEqual(actualTsar.Name, expectedTsar.Name);
         //ClassicAssert.AreEqual(actualTsar.Age, expectedTsar.Age);
